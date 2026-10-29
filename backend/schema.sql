@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS tramites (
+  id SERIAL PRIMARY KEY,
+  curp VARCHAR(18) NOT NULL,
+  tipo VARCHAR(30) NOT NULL CHECK (tipo IN ('TRASPASO','RETIRO','CONSTANCIA')),
+  estatus VARCHAR(20) NOT NULL DEFAULT 'PENDIENTE' CHECK (estatus IN ('PENDIENTE','EN_PROCESO','CANCELADO','CONCLUIDO')),
+  monto NUMERIC(12,2),
+  empleado_id INTEGER NOT NULL,
+  creado_en TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS tramites_estatus_creado_id_idx ON tramites(estatus, creado_en DESC, id DESC);
